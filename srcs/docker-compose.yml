@@ -3,14 +3,31 @@
 
 services:
   mariadb:
-    image: mariadb:latest
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
     container_name: mariadb_container
-    environment:
-      - .env
+    env_file:
+        - .env
     ports:
-      - "3306:3306"
+        - "3306:3306"
     volumes:
-      - mariadb_data:/var/lib/mysql
+        - mariadb_data:/var/lib/mysql
+
+  wordpress:
+    depends_on:
+      - mariadb
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    container_name: wordpress_container
+    ports:
+      - "8000:80"
+    env_file:
+      - .env
+    volumes:
+      - wordpress_data:/var/www/html
 
 volumes:
   mariadb_data:
+  wordpress_data:
