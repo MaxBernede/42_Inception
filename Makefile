@@ -1,29 +1,18 @@
-# Define the default target
-all: build-mariadb run-mariadb
+DOCKER_COMPOSE = srcs/docker-compose.yml
+MARIADB_NAME = mariadb
 
-# Define targets for building Docker images
-build-mariadb:
-	docker build -t mariadb_image srcs/requirements/mariadb
+all : build up
 
-# Define targets for running Docker containers
-run-mariadb:
-	docker run --name mariadb_container -d my-mariadb-image
+build:
+	docker-compose -f $(DOCKER_COMPOSE) -p $(MARIADB_NAME) build
 
-#clean all not used containers and images
-clean-all:
-	docker system prune -a
+up:
+	docker-compose -f $(DOCKER_COMPOSE) -p $(MARIADB_NAME) up -d
 
-#remove everything by force
-kill_all:
-	@CONTAINERS=$$(docker container ls -aq); \
-	if [ -n "$$CONTAINERS" ]; then \
-		docker container stop $$CONTAINERS; \
-		docker container rm $$CONTAINERS; \
-	else \
-		echo "No containers to stop or remove."; \
-	fi
-	docker system prune -a --force
+down:
+	docker-compose -f $(DOCKER_COMPOSE) -p $(MARIADB_NAME) down
 
+delete:
+	docker-compose -f $(DOCKER_COMPOSE) -p $(MARIADB_NAME) down --volumes --remove-orphans
 
-
-.PHONY: run-mariadb build-mariadb clean_all all
+.PHONY: all build up down delete
