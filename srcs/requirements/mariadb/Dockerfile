@@ -8,7 +8,7 @@ COPY tools/script.sh .
 
 RUN mkdir /run/mysqld && chmod +x script.sh
 
-CMD ["mysqld"]
+CMD ["./script.sh"]
 
 # Expose port 3306 for MariaDB
 # EXPOSE 3306
