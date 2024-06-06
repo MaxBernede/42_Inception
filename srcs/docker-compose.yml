@@ -2,32 +2,36 @@
 #version: '3.8'
 
 services:
-  mariadb:
-    build:
-      context: ./requirements/mariadb
-      dockerfile: Dockerfile
-    container_name: mariadb_container
-    env_file:
-        - .env
+  nginx:
+    build: requirements/nginx
+    container_name: nginx
     ports:
-        - "3306:3306"
+      - "80:80"
     volumes:
-        - mariadb_data:/var/lib/mysql
-
+      - ./web:/var/www/html
   wordpress:
-    depends_on:
-      - mariadb
-    build:
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
-    container_name: wordpress_container
-    ports:
-      - "8000:80"
-    env_file:
-      - .env
+    build: requirements/wordpress
+    container_name: wp-php
     volumes:
-      - wordpress_data:/var/www/html
+      - ./web:/var/www/html
+    # depends_on:
+    #   - mariadb
+    # ports:
+    #   - "8000:80"
+    # env_file:
+    #   - .env
+  mariadb:
+    build: requirements/mariadb
+    container_name: mariadb_container
+  #   env_file:
+  #       - .env
+  #   ports:
+  #       - "3306:3306"
+  #   volumes:
+  #       - mariadb_data:/var/lib/mysql
 
 volumes:
-  mariadb_data:
-  wordpress_data:
+  web:
+# volumes:
+#   mariadb_data:
+#   wordpress_data:

@@ -3,11 +3,13 @@ PROJECT_NAME = maxb_inception
 
 all : build up
 
+
 build:
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) build
 
+
 up:
-	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) up -d
+	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) up
 
 down:
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) down
