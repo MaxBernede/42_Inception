@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#i think my program doesnt work because env not used
+if [[ -z "${MYSQL_DATABASE}" || -z "${MYSQL_USER}" || -z "${MYSQL_PASSWORD}" || -z "${MYSQL_ROOT_PASSWORD}" ]]; then
+    echo "Required environment variables (MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD) are not set."
+    exit 1
+fi
+
 #start mysql to be able to run the cmds i need
 service mysql start;
 
