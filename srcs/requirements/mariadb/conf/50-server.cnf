@@ -1,4 +1,9 @@
 
+#port = ensure mariadb listen to the default port for incomming connections
+#bind = * allow clients from any network connection to access it
+#datadir = folder in which mariadb store files
+#user = the server runs under the mysql account which should be created while mariadb instal process
+
 [mysqld]
 port = 3306
 bind_address = *

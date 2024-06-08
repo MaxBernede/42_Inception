@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#i think my program doesnt work because env not used
+#i think my program doesnt work because env not used. In case i run directly the docker, this trigger because it needs .env file to run
 if [[ -z "${MYSQL_DATABASE}" || -z "${MYSQL_USER}" || -z "${MYSQL_PASSWORD}" || -z "${MYSQL_ROOT_PASSWORD}" ]]; then
     echo "Required environment variables (MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD) are not set."
     exit 1
