@@ -3,33 +3,59 @@
 
 services:
   nginx:
+    container_name: nginx 
+    volumes:
+    - wordpress:/var/www/wordpress
+    networks:
+    - inception
+    depends_on:        			 # Nouvelle ligne, indiquant de ne pas démarrer NGINX tant que WordPress n'a pas démarré.
+    - wordpress
     build: requirements/nginx
-    container_name: nginx
-    depends_on:
-      - wordpress
-      - mariadb
+    env_file: .env
     ports:
-      - "80:80"
-    volumes:
-      - ./web:/var/www/html
-    networks:
-      inception:
+    - "443:443" 		# on indique le port qui sera exposé a la machine locale
+    restart: on-failure
+
   wordpress:
-    build: requirements/wordpress
-    container_name: wp-php
+    container_name: wordpress
+    env_file: .env
     volumes:
-      - ./web:/var/www/html
+    - wordpress:/var/www/wordpress
     networks:
-      inception:
+    - inception
+    build: requirements/wordpress
+    depends_on:    					# WordPress démarrera uniquement après MariaDB (sinon il ne pourra pas configurer la base de données...)
+    - mariadb
+    restart: on-failure
+    expose: 
+    - "9000"
+
   mariadb:
     build: requirements/mariadb
+    env_file: .env
     container_name: mariadb_container
     volumes:
-      - ./database:/var/lib/mysql
+      - mariadb:/var/lib/mysql
+    restart: unless-stopped
+    expose:
+      - "3306"
     networks:
-      inception:
+      - inception
 
 networks:
   inception:
+    driver: bridge #explain to docker to install automatically rules for containers to communicate
+
 volumes:
-  web:
+  wordpress:
+    driver: local # ici nous stockons le volume en local
+    driver_opts:
+      type: 'none' 									# aucun type spécifique
+      o: 'bind'
+      device: '/Users/mbernede/data/wordpress' 		#Ou stocker le dossier sur votre ordinateur en local
+  mariadb:
+    driver: local
+    driver_opts:
+      type: 'none' 
+      o: 'bind'										 # Les Bind Mounts sont des volumes qui se montent sur un chemin d'accès à l'hôte, et ils peuvent être modifiés par d'autres processus en dehors de docker.
+      device: '/Users/mbernede/data/mariadb'			#Ou stocker le dossier sur votre ordinateur en local

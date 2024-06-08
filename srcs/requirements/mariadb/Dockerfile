@@ -15,9 +15,3 @@ ENTRYPOINT ["bash", "script.sh"]
 
 # Expose port 3306 for MariaDB
 EXPOSE 3306
-
-# Copy custom configuration files, if any
-# COPY ./path/to/custom/config.cnf /etc/mysql/conf.d/
-
-
-# Run the MariaDB server
