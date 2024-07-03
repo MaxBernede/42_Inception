@@ -5,6 +5,7 @@ RUN apt install openssl -y
 
 #create the folder to have the TSL files
 RUN mkdir -p /etc/nginx/ssl
+
 #req create auto signed certificates
 #-x509 precise the type of certificate
 #-nodes put no password on the certif

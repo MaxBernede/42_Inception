@@ -20,6 +20,7 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 
 #copy auto_config
 COPY tools/auto_config.sh auto_config.sh
+RUN chmod +x /auto_config.sh
 
 #run our script in wordpress
 ENTRYPOINT ["bash", "auto_config.sh"]
