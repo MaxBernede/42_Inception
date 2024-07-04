@@ -3,7 +3,13 @@ FROM inception:base
 RUN apt-get install -y curl php php7.4-fpm php-mysql mariadb-client wget
 
 #get wordpress
-RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
+# Copy local files into the Docker image
+COPY wordpress-6.0-fr_FR.tar.gz /var/www/
+
+#DO BELOW WHEN NOT RUN ON MY MAC
+#RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
+
+
 #untar it then remove the .tar not needed
 RUN cd /var/www && tar -xzf wordpress-6.0-fr_FR.tar.gz && rm wordpress-6.0-fr_FR.tar.gz
 #gives access to root user

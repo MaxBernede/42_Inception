@@ -13,6 +13,9 @@ build:
 	@if [ -f $(IMAGE_STORE_DIR)/debian_bullseye.tar ]; then \
 		docker load -i $(IMAGE_STORE_DIR)/debian_bullseye.tar; \
 	fi
+	@if [ -f "$(IMAGE_STORE_DIR)/files/wordpress-6.0-fr_FR.tar.gz" ]; then \
+    	cp "$(IMAGE_STORE_DIR)/files/wordpress-6.0-fr_FR.tar.gz" /Users/maxb/Desktop/inception/new/srcs/requirements/wordpress ;\
+	fi
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) build
 
 #specifying the nginx wordpress and mariadb to up them but not inception as it's a base image
@@ -27,6 +30,7 @@ clean:
 	docker system prune -f --volumes
 
 fclean: clean
+	rm ./srcs/requirements/wordpress/wordpress-6.0-fr_FR.tar.gz
 	@if [ -n "$$(docker images -q)" ]; then \
 		docker rmi $$(docker images -q); \
 	else \
