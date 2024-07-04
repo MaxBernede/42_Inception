@@ -1,7 +1,6 @@
-FROM debian:buster
+FROM inception:base
 
-RUN apt update -y && apt upgrade -y && apt install -y php-fpm php-mysqli curl wget
-RUN apt-get install -y php7.3 php-mysql mariadb-client
+RUN apt-get install -y curl php php7.4-fpm php-mysql mariadb-client wget
 
 #get wordpress
 RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
@@ -12,7 +11,6 @@ RUN		chown -R root:root /var/www/wordpress
 
 #Auto cli fill project
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-
 #access to script
 RUN chmod +x wp-cli.phar
 #move it in binaries

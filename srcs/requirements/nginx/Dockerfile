@@ -1,6 +1,6 @@
-FROM debian:buster
+FROM inception:base
 
-RUN apt update -y && apt upgrade -y && apt install -y nginx
+RUN apt install -y nginx
 RUN apt install openssl -y
 
 #create the folder to have the TSL files

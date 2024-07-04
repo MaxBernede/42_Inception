@@ -1,15 +1,14 @@
 #!/bin/bash
 
-#i think my program doesnt work because env not used. In case i run directly the docker, this trigger because it needs .env file to run
 if [[ -z "${MYSQL_DATABASE}" || -z "${MYSQL_USER}" || -z "${MYSQL_PASSWORD}" || -z "${MYSQL_ROOT_PASSWORD}" ]]; then
     echo "Required environment variables (MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD) are not set."
     exit 1
 fi
 echo "my values : ${MYSQL_DATABASE} ${MYSQL_USER} ${MYSQL_PASSWORD} ${MYSQL_ROOT_PASSWORD}"
 
-#start mysql to be able to run the cmds i need
-sudo service mariadb start;
-sleep 5
+#start mariadb to be able to run the cmds i need
+service mariadb start;
+sleep 1
 
 # Create database if it doesn't exist
 mariadb -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"

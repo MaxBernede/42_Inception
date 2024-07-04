@@ -1,7 +1,16 @@
 #this line is not needed since Docker-compose v2.x
 #version: '3.8'
 
+#i used the idea of the base from OtheloPlusPlus 
 services:
+  base:
+    container_name: inception
+    image: inception:base
+    build:
+      context: ./requirements/base
+      dockerfile: Dockerfile
+    restart: "no"
+
   nginx:
     container_name: nginx 
     volumes:
@@ -9,7 +18,8 @@ services:
     networks:
     - inception
     depends_on:        			 # Nouvelle ligne, indiquant de ne pas démarrer NGINX tant que WordPress n'a pas démarré.
-    - wordpress
+      - base
+      - wordpress
     build: requirements/nginx
     env_file: .env
     ports:
@@ -24,8 +34,9 @@ services:
     networks:
     - inception
     build: requirements/wordpress
-    depends_on:    					# WordPress démarrera uniquement après MariaDB (sinon il ne pourra pas configurer la base de données...)
-    - mariadb
+    depends_on:   					# WordPress démarrera uniquement après MariaDB (sinon il ne pourra pas configurer la base de données...)
+      - base
+      - mariadb
     restart: on-failure
     expose: 
     - "9000"
@@ -34,6 +45,8 @@ services:
     build: requirements/mariadb
     env_file: .env
     container_name: mariadb_container
+    depends_on:
+      - base
     volumes:
       - mariadb:/var/lib/mysql
     restart: unless-stopped

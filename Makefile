@@ -1,35 +1,47 @@
 DOCKER_COMPOSE = srcs/docker-compose.yml
 PROJECT_NAME = maxb_inception
+DOCKER_PERMISSIONS_DIR = /Users/maxb/.docker
+DATA_DIR = ${HOME}/data
 
-all : build up
-
+all: build up
 
 build:
-	sudo chmod -R 777 /Users/maxb/.docker
-	mkdir -p ${HOME}/data
-	mkdir -p ${HOME}/data/wordpress
-	mkdir -p ${HOME}/data/mariadb
+	sudo chmod -R 777 $(DOCKER_PERMISSIONS_DIR)
+	mkdir -p $(DATA_DIR)/wordpress
+	mkdir -p $(DATA_DIR)/mariadb
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) build
 
-
+#specifying the nginx wordpress and mariadb to up them but not inception as it's a base image
 up:
-	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) up --build
+	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) up --build nginx wordpress mariadb
 
 down:
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) down
 
-#-z check if the value is empty.
-#docker images -q, gives all the images ID one per line
-delete_images:
-	@if [ -z "$$(docker images -q)" ]; then \
-		echo "No images to delete."; \
-	else \
+clean:
+	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) down
+	docker system prune -f --volumes
+
+fclean: clean
+	@if [ -n "$$(docker images -q)" ]; then \
 		docker rmi $$(docker images -q); \
+	else \
+		echo "No images to delete."; \
+	fi
+	@if [ -n "$$(docker volume ls -q)" ]; then \
+		docker volume rm $$(docker volume ls -q); \
+	else \
+		echo "No volumes to delete."; \
+	fi
+	@if [ -n "$$(docker network ls -q)" ]; then \
+		docker network rm $$(docker network ls -q); \
+	else \
+		echo "No networks to delete."; \
 	fi
 
 delete:
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) down --volumes --remove-orphans
 
-rmf: delete delete_images
+rmf: delete fclean
 
-.PHONY: all build up down delete delete_images rmf
+.PHONY: all build up down clean fclean delete rmf
