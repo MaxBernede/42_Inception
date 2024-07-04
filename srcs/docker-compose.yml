@@ -17,13 +17,13 @@ services:
     - wordpress:/var/www/wordpress
     networks:
     - inception
-    depends_on:        			 # Nouvelle ligne, indiquant de ne pas démarrer NGINX tant que WordPress n'a pas démarré.
+    depends_on: #start nginx after base and wordpress
       - base
       - wordpress
     build: requirements/nginx
     env_file: .env
     ports:
-    - "443:443" 		# on indique le port qui sera exposé a la machine locale
+    - "443:443"
     restart: on-failure
 
   wordpress:
@@ -34,8 +34,7 @@ services:
     networks:
     - inception
     build: requirements/wordpress
-    depends_on:   					# WordPress démarrera uniquement après MariaDB (sinon il ne pourra pas configurer la base de données...)
-      - base
+    depends_on:
       - mariadb
     restart: on-failure
     expose: 
@@ -57,17 +56,17 @@ services:
 
 volumes:
   wordpress:
-    driver: local # ici nous stockons le volume en local
+    driver: local 
     driver_opts:
-      type: 'none' 									# aucun type spécifique
+      type: 'none'
       o: 'bind'
-      device: ${HOME}/data/wordpress 		#Ou stocker le dossier sur votre ordinateur en local
+      device: ${HOME}/data/wordpress
   mariadb:
     driver: local
     driver_opts:
       type: 'none' 
-      o: 'bind'										 # Les Bind Mounts sont des volumes qui se montent sur un chemin d'accès à l'hôte, et ils peuvent être modifiés par d'autres processus en dehors de docker.
-      device: ${HOME}/data/mariadb			#Ou stocker le dossier sur votre ordinateur en local
+      o: 'bind'
+      device: ${HOME}/data/mariadb
 
 networks:
   inception:

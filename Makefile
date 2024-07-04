@@ -2,13 +2,17 @@ DOCKER_COMPOSE = srcs/docker-compose.yml
 PROJECT_NAME = maxb_inception
 DOCKER_PERMISSIONS_DIR = /Users/maxb/.docker
 DATA_DIR = ${HOME}/data
+#below is only used when i have bad internet and want to store information to not download
+IMAGE_STORE_DIR = ${HOME}/temp-docker
 
 all: build up
 
 build:
 	sudo chmod -R 777 $(DOCKER_PERMISSIONS_DIR)
-	mkdir -p $(DATA_DIR)/wordpress
-	mkdir -p $(DATA_DIR)/mariadb
+	mkdir -p $(DATA_DIR)/wordpress $(DATA_DIR)/mariadb
+	@if [ -f $(IMAGE_STORE_DIR)/debian_bullseye.tar ]; then \
+		docker load -i $(IMAGE_STORE_DIR)/debian_bullseye.tar; \
+	fi
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) build
 
 #specifying the nginx wordpress and mariadb to up them but not inception as it's a base image

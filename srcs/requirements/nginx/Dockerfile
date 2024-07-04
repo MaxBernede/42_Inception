@@ -1,7 +1,6 @@
 FROM inception:base
 
-RUN apt install -y nginx
-RUN apt install openssl -y
+RUN apt install -y nginx openssl
 
 #create the folder to have the TSL files
 RUN mkdir -p /etc/nginx/ssl

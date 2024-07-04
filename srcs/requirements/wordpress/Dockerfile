@@ -7,7 +7,7 @@ RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
 #untar it then remove the .tar not needed
 RUN cd /var/www && tar -xzf wordpress-6.0-fr_FR.tar.gz && rm wordpress-6.0-fr_FR.tar.gz
 #gives access to root user
-RUN		chown -R root:root /var/www/wordpress			
+RUN	chown -R root:root /var/www/wordpress			
 
 #Auto cli fill project
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
