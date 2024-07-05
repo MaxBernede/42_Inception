@@ -7,8 +7,8 @@ IMAGE_STORE_DIR = ${HOME}/temp-docker
 
 all: build up
 
+#sudo chmod -R 777 $(DOCKER_PERMISSIONS_DIR)
 build:
-	sudo chmod -R 777 $(DOCKER_PERMISSIONS_DIR)
 	mkdir -p $(DATA_DIR)/wordpress $(DATA_DIR)/mariadb
 	@if [ -f $(IMAGE_STORE_DIR)/debian_bullseye.tar ]; then \
 		docker load -i $(IMAGE_STORE_DIR)/debian_bullseye.tar; \

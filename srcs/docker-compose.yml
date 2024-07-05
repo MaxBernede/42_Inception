@@ -14,7 +14,7 @@ services:
   nginx:
     container_name: nginx 
     volumes:
-    - wordpress:/var/www/wordpress
+    - wordpress:/var/www/html
     networks:
     - inception
     depends_on: #start nginx after base and wordpress
@@ -23,14 +23,14 @@ services:
     build: requirements/nginx
     env_file: .env
     ports:
-    - "443:443"
+    - "8443:8443"
     restart: on-failure
 
   wordpress:
     container_name: wordpress
     env_file: .env
     volumes:
-    - wordpress:/var/www/wordpress
+    - wordpress:/var/www/html
     networks:
     - inception
     build: requirements/wordpress

@@ -9,13 +9,13 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 # go to wordpress directory
-cd /var/www/wordpress
+cd /var/www/html
 # give permission to wordpress directory
-sudo chmod -R 755 /var/www/wordpress/
-sudo chmod 777 /var/www/wordpress/wp-config.php
+sudo chmod -R 755 /var/www/html/
+sudo chmod 777 /var/www/html/wp-config.php
 
 # change owner of wordpress directory to www-data
-chown -R www-data:www-data /var/www/wordpress
+chown -R www-data:www-data /var/www/html
 #---------------------------------------------------ping mariadb---------------------------------------------------#
 # check if mariadb container is up and running
 ping_mariadb_container() {
@@ -41,13 +41,13 @@ fi
 #---------------------------------------------------wp installation---------------------------------------------------##---------------------------------------------------wp installation---------------------------------------------------#
 
 echo "I AM ECHO IN  THE IF STATEMENT"
-wp core download --allow-root
+wp core download --allow-root --path="/var/www/html"
 # create wp-config.php file with database details
-wp core config --dbhost=mariadb:3306 --dbname="$MYSQL_DATABASE" --dbuser="$MYSQL_USER" --dbpass="$MYSQL_PASSWORD" --allow-root
+wp core config --path="/var/www/html" --dbhost=mariadb:3306 --dbname="$MYSQL_DATABASE" --dbuser="$MYSQL_USER" --dbpass="$MYSQL_PASSWORD" --allow-root
 # install wordpress with the given title, admin username, password and email
-wp core install --url="$DOMAIN_NAME" --title="$SITE_TITLE" --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL" --allow-root
+wp core install --path="/var/www/html" --url="$DOMAIN_NAME" --title="$SITE_TITLE" --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL" --allow-root
 #create a new user with the given username, email, password and role
-wp user create "$ALL_USER" "$ALL_EMAIL" --user_pass="$ALL_PASSWORD" --role=author --path="/var/www/wordpress" --allow-root
+wp user create "$ALL_USER" "$ALL_EMAIL" --user_pass="$ALL_PASSWORD" --role=author --path="/var/www/html" --allow-root
 
 #---------------------------------------------------php config---------------------------------------------------#
 

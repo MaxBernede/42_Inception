@@ -30,6 +30,8 @@
 
 FROM inception:base
 
+EXPOSE 9000
+
 # update and upgrade the system
 # RUN apt-get update 
 # RUN apt-get upgrade -y

@@ -13,12 +13,12 @@ mv wp-cli.phar /usr/local/bin/wp
 
 # give permission to wordpress directory
 echo "ECHO BEFORE FIRST CHMOD"
-chmod -R 755 /var/www/wordpress/
+chmod -R 755 /var/www/html/
 echo "BETWEEN"
-chmod 777 /var/www/wordpress/wp-config.php
+chmod 777 /var/www/html/wp-config.php
 
 # Check if wp-config.php does not exist and create it
-if [ ! -e /var/www/wordpress/wp-config.php ]; then
+if [ ! -e /var/www/html/wp-config.php ]; then
     #Create the wp-config.php file using WP-CLI
     # echo -e "Run config create"
     # wp config create --allow-root --dbname=$MYSQL_DATABASE --dbuser=$MYSQL_USER --dbpass=$MYSQL_PASSWORD \
@@ -40,7 +40,7 @@ if [ ! -e /var/www/wordpress/wp-config.php ]; then
     # install wordpress with the given title, admin username, password and email
     wp core install --url="$DOMAIN_NAME" --title="$SITE_TITLE" --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL" --allow-root
     #create a new user with the given username, email, password and role
-    wp user create "$ALL_USER" "$ALL_EMAIL" --user_pass="$ALL_PASSWORD" --role=author --path="/var/www/wordpress" --allow-root
+    wp user create "$ALL_USER" "$ALL_EMAIL" --user_pass="$ALL_PASSWORD" --role=author --path="/var/www/html" --allow-root
 
 fi
 
