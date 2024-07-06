@@ -1,4 +1,5 @@
-rm -rf ~/data
+chmod 777 -R ~/datas
+rm -rf ~/datas
 rm -rf db wordpress
 rm ./srcs/requirements/wordpress/wordpress-6.0-fr_FR.tar.gz
 docker rm -f $(docker ps -a -q) 

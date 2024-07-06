@@ -1,7 +1,7 @@
 DOCKER_COMPOSE = srcs/docker-compose.yml
 PROJECT_NAME = maxb_inception
 DOCKER_PERMISSIONS_DIR = /Users/maxb/.docker
-DATA_DIR = ${HOME}/data
+DATA_DIR = ${HOME}/datas
 #below is only used when i have bad internet and want to store information to not download
 IMAGE_STORE_DIR = ${HOME}/temp-docker
 
@@ -12,9 +12,6 @@ build:
 	mkdir -p $(DATA_DIR)/wordpress $(DATA_DIR)/mariadb
 	@if [ -f $(IMAGE_STORE_DIR)/debian_bullseye.tar ]; then \
 		docker load -i $(IMAGE_STORE_DIR)/debian_bullseye.tar; \
-	fi
-	@if [ -f "$(IMAGE_STORE_DIR)/files/wordpress-6.0-fr_FR.tar.gz" ]; then \
-    	cp "$(IMAGE_STORE_DIR)/files/wordpress-6.0-fr_FR.tar.gz" /Users/maxb/Desktop/inception/new/srcs/requirements/wordpress ;\
 	fi
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) build
 

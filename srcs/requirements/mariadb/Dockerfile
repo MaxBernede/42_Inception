@@ -8,11 +8,6 @@ COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY tools/script.sh .
 RUN chmod 777 ./script.sh
 
-#chown fixed the problem of failign to start
-#change owner of the path so mysql have it to run properly
-# RUN mkdir /run/mysqld 
-# RUN chown -R mysql:root /run/mysqld
-
 # Expose port 3306 for MariaDB
 EXPOSE 3306
 
