@@ -1,7 +1,7 @@
-#this line is not needed since Docker-compose v2.x
-#version: '3.8'
+# This line is not needed since Docker-compose v2.x
+# version: '3.8'
 
-#i used the idea of the base from OtheloPlusPlus 
+# I used the idea of the base from OtheloPlusPlus 
 services:
   base:
     container_name: inception
@@ -9,21 +9,21 @@ services:
     build:
       context: ./requirements/base
       dockerfile: Dockerfile
-    restart: "no"
+    restart: "no"                                 # anyway, this docker is not upped on Makefile
 
   nginx:
     container_name: nginx 
     volumes:
-    - wordpress:/var/www/html
+    - wordpress:/var/www/html                     
     networks:
     - inception
-    depends_on: #start nginx after base and wordpress
+    depends_on:                                   # start nginx after base and wordpress
       - base
       - wordpress
     build: requirements/nginx
     env_file: .env
     ports:
-    - "8443:8443"
+    - "8443:8443"                                 # Port to change to 443 or 8443 if no sudo access
     restart: on-failure
 
   wordpress:
@@ -43,7 +43,7 @@ services:
   mariadb:
     build: requirements/mariadb
     env_file: .env
-    container_name: mariadb_container
+    container_name: mariadb
     depends_on:
       - base
     volumes:
@@ -64,11 +64,11 @@ volumes:
   mariadb:
     driver: local
     driver_opts:
-      type: 'none' 
+      type: 'none'
       o: 'bind'
       device: ${HOME}/datas/mariadb
 
 networks:
   inception:
-    driver: bridge #explain to docker to install automatically rules for containers to communicate
+    driver: bridge                                # explain to docker to install automatically rules for containers to communicate
 

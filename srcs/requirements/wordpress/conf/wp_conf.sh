@@ -26,13 +26,28 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
     wp core download --allow-root --path="$WP_PATH"
     
     echo "[========CREATING WP CONFIG========]"
-    wp core config --path="$WP_PATH" --dbhost=mariadb:3306 --dbname="$MYSQL_DATABASE" --dbuser="$MYSQL_USER" --dbpass="$MYSQL_PASSWORD" --allow-root
+    wp core config  --path="$WP_PATH"             \
+                    --dbhost=mariadb:3306         \
+                    --dbname="$MYSQL_DATABASE"    \
+                    --dbuser="$MYSQL_USER"        \
+                    --dbpass="$MYSQL_PASSWORD"    \
+                    --allow-root
     
     echo "[========INSTALLING WORDPRESS========]"
-    wp core install --path="$WP_PATH" --url="$DOMAIN_NAME" --title="$SITE_TITLE" --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL" --allow-root
+    wp core install --path="$WP_PATH" \
+                    --url="$DOMAIN_NAME" \
+                    --title="$SITE_TITLE" \
+                    --admin_user="$ADMIN_USER" \
+                    --admin_password="$ADMIN_PASSWORD" \
+                    --admin_email="$ADMIN_EMAIL" \
+                    --allow-root
     
     echo "[========CREATING ADDITIONAL USER========]"
-    wp user create "$ALL_USER" "$ALL_EMAIL" --user_pass="$ALL_PASSWORD" --role=author --path="$WP_PATH" --allow-root
+    wp user create "$ALL_USER" "$ALL_EMAIL"         \
+                    --user_pass="$ALL_PASSWORD"     \
+                    --role=author                   \
+                    --path="$WP_PATH"               \
+                    --allow-root
 else
     echo "[========WORDPRESS ALREADY INSTALLED========]"
 fi
