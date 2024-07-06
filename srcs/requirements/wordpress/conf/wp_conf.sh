@@ -34,8 +34,8 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
                     --allow-root
     
     echo "[========INSTALLING WORDPRESS========]"
-    wp core install --path="$WP_PATH" \
-                    --url="$DOMAIN_NAME" \
+    wp core install --path="$WP_PATH"             \
+                    --url="$DOMAIN_NAME"          \
                     --title="$SITE_TITLE" \
                     --admin_user="$ADMIN_USER" \
                     --admin_password="$ADMIN_PASSWORD" \
@@ -56,9 +56,10 @@ fi
 
 # change listen port from unix socket to 9000
 sed -i '36 s@/run/php/php7.4-fpm.sock@9000@' /etc/php/7.4/fpm/pool.d/www.conf
-# create a directory for php-fpm
-mkdir -p /run/php
-# start php-fpm service in the foreground to keep the container running
+
+mkdir -p /run/php           # create a directory for php-fpm
 
 sudo chmod -R 755 /var/www/html/
-/usr/sbin/php-fpm7.4 -F
+
+exec /usr/sbin/php-fpm7.4 -F # start php-fpm service in back to keep the container running, exec make it stop faster
+

@@ -16,4 +16,5 @@ mariadb -e "FLUSH PRIVILEGES;"                                  # Refresh privil
 
 mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown              # Restart mysql
 
-exec mysqld_safe                                                # Start it again safe
+#use of exec mysqld to reduce stop time because PID == 1 ?
+exec mysqld_safe                                              		# Start it again safe
