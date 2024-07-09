@@ -4,6 +4,10 @@ RUN apt install -y nginx openssl
 
 #create the folder to have the TSL files
 RUN mkdir -p /etc/nginx/ssl
+#give access to the root in case
+RUN chmod 755 /var/www/html
+#gives privileges to the main user
+RUN chown -R www-data:www-data /var/www/html
 
 #req create auto signed certificates
 #-x509 precise the type of certificate
@@ -22,14 +26,8 @@ RUN openssl	req									\
 RUN mkdir -p /var/run/nginx
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 
-#give access to the root in case
-RUN chmod 755 /var/www/html
-
 # Added to check if the 443 problem is because of that
-EXPOSE 8443 
-
-#gives privileges to the main user
-RUN chown -R www-data:www-data /var/www/html
+EXPOSE 443 
 
 #CMD ["nginx", "-g", "daemon off;"]
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
