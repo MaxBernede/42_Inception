@@ -16,29 +16,19 @@ down:
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) down
 
 clean:
-	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) down
-	docker system prune -f --volumes
+	@docker stop $(shell docker ps -qa) || true
+	@docker rm $(shell docker ps -qa) || true
+	@docker rmi -f $(shell docker images -qa) || true
+	@docker volume rm $(shell docker volume ls -q) || true
+	@docker network rm $(shell docker network ls -q) 2>/dev/null || true
+	@docker system prune -f || true
+	@docker volume prune -f || true
+	@docker network prune -f || true
 
-fclean: clean
-	@if [ -n "$$(docker images -q)" ]; then \
-		docker rmi $$(docker images -q); \
-	else \
-		echo "No images to delete."; \
-	fi
-	@if [ -n "$$(docker volume ls -q)" ]; then \
-		docker volume rm $$(docker volume ls -q); \
-	else \
-		echo "No volumes to delete."; \
-	fi
-	@if [ -n "$$(docker network ls -q)" ]; then \
-		docker network rm $$(docker network ls -q); \
-	else \
-		echo "No networks to delete."; \
-	fi
 
 delete:
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) down --volumes --remove-orphans
 
-rmf: delete fclean
+rmf: delete clean
 
 .PHONY: all build up down clean fclean delete rmf
