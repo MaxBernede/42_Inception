@@ -25,7 +25,15 @@ clean:
 	@docker volume prune -f || true
 	@docker network prune -f || true
 
+nginx:
+	docker exec -it nginx bash
 
+wp:
+	docker exec -it wordpress bash
+	
+maria:
+	docker exec -it mariadb bash
+	
 delete:
 	docker-compose -f $(DOCKER_COMPOSE) -p $(PROJECT_NAME) down --volumes --remove-orphans
 

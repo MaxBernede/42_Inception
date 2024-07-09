@@ -19,7 +19,11 @@ COPY conf/nginx.conf /etc/nginx/nginx.conf
 #give access to the root in case
 RUN chmod 755 /var/www/html
 
+# Added to check if the 443 problem is because of that
+EXPOSE 443 
+
 #gives privileges to the main user
 RUN chown -R www-data:www-data /var/www/html
 
-CMD ["nginx", "-g", "daemon off;"]
+#CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
