@@ -12,6 +12,8 @@ RUN mkdir -p /etc/nginx/ssl
 RUN openssl	req									\
 			-x509								\
 			-nodes								\
+			-newkey rsa:2048					\
+			-days 365							\
 			-out /etc/nginx/ssl/inception.crt	\
 			-keyout /etc/nginx/ssl/inception.key \
 			-subj "/C=NL/ST=AMS/L=Amsterdam/O=42/OU=Codam/CN=mbernede.42.fr/UID=mbernede"
