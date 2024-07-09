@@ -23,7 +23,7 @@ services:
     build: requirements/nginx
     env_file: .env
     ports:
-    - "443:443"                                 # Port to change to 443 or 8443 if no sudo access
+    - "8443:8443"                                 # Port to change to 443 or 8443 if no sudo access
     restart: on-failure
 
   wordpress:
