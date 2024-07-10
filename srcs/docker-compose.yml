@@ -1,7 +1,6 @@
 # This line is not needed since Docker-compose v2.x
 # version: '3.8'
 
-# I used the idea of the base from OtheloPlusPlus 
 services:
   base:
     container_name: inception
